@@ -1,12 +1,21 @@
 $(function(){
 
   const images = ['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H'];
+  // const images = [
+  //   '../images/jaime.jpg', '../images/jaime.jpg',
+  //   '../images/cersei.jpg', '../images/cersei.jpg',
+  //   '../images/dany.jpg', '../images/dany.jpg',
+  //   '../images/bronn.jpg', '../images/bronn.jpg',
+  //   '../images/jon.jpg', '../images/jon.jpg',
+  //   '../images/ned.jpg', '../images/ned.jpg',
+  //   '../images/arya.jpg', '../images/arya.jpg',
+  //   '../images/tyrion.jpg', '../images/tyrion.jpg'
+  // ];
   const game = $(".game");
   const movesNum = $(".moves");
   let moves = 0;
   let opened = [];
 
-  // funkcja do szuflowania wartosci przekazywanych z tablicy
   shuffle = (array) => {
     for( let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i+1));
@@ -17,7 +26,6 @@ $(function(){
     return array;
   };
 
-  // tworzenie kart
   newGame = () => {
     game.empty();
     moves = 0;
@@ -28,8 +36,6 @@ $(function(){
     };
   };
 
-  // event do obracania kart
-
   game.on('click', '.card:not(".match, .flip")', function() {
 
     if(game.find('.flip').length >= 2){return false;}
@@ -37,7 +43,6 @@ $(function(){
     let flipped = $(this).data('elem');
     $(this).addClass("flip");
     opened.push(flipped);
-    console.log(opened);
 
     if(opened.length > 1) {
       if(opened[0] === opened[1]) {
@@ -50,9 +55,10 @@ $(function(){
         setTimeout( () => {
           game.find('.flip').removeClass('flip notmatch');
         }, 1000);
-
       }
       opened = [];
+      moves++;
+      movesNum.html(moves);
     }
 
 
@@ -61,13 +67,3 @@ $(function(){
 
   newGame();
 })
-
-
-// if(open.length == 2){
-//   open.eq(0).data('elem') === open.eq(1).data('elem') && open.addClass('match');
-//   setTimeout( () => {
-//     open = $('.card.flip:not(.match)');
-//     open.removeClass('flip');
-//   },1500);
-//   opened = [];
-// }
