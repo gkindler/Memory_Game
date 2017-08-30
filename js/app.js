@@ -1,8 +1,10 @@
 $(function(){
 
   const images = ['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H'];
+  const game = $(".game");
+  const movesNum = $(".moves");
+  let moves = 0;
   let opened = [];
-  const game = $(".game")
 
   // funkcja do szuflowania wartosci przekazywanych z tablicy
   shuffle = (array) => {
@@ -18,6 +20,8 @@ $(function(){
   // tworzenie kart
   newGame = () => {
     game.empty();
+    moves = 0;
+    movesNum.html(moves);
     let cards = shuffle(images);
     for ( let i = 0; i < cards.length; i++) {
       game.append($(`<div class="card" data-elem="${cards[i]}"><p class="value">${cards[i]}</p></div>`))
@@ -28,7 +32,7 @@ $(function(){
 
   game.on('click', '.card:not(".match, .flip")', function() {
 
-    if(document.querySelectorAll('.flip').length >= 2){return false;}
+    if(game.find('.flip').length >= 2){return false;}
 
     let flipped = $(this).data('elem');
     $(this).addClass("flip");
@@ -44,7 +48,7 @@ $(function(){
       } else {
         game.find('.flip').addClass('notmatch');
         setTimeout( () => {
-          game.find('.flip').removeClass('flip');
+          game.find('.flip').removeClass('flip notmatch');
         }, 1000);
 
       }
