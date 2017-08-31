@@ -1,18 +1,23 @@
 $(function(){
 
-  const images = ['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H'];
-  // const images = [
-  //   '../images/jaime.jpg', '../images/jaime.jpg',
-  //   '../images/cersei.jpg', '../images/cersei.jpg',
-  //   '../images/dany.jpg', '../images/dany.jpg',
-  //   '../images/bronn.jpg', '../images/bronn.jpg',
-  //   '../images/jon.jpg', '../images/jon.jpg',
-  //   '../images/ned.jpg', '../images/ned.jpg',
-  //   '../images/arya.jpg', '../images/arya.jpg',
-  //   '../images/tyrion.jpg', '../images/tyrion.jpg'
-  // ];
+  const images = [
+    './images/jaime.jpg', './images/jaime.jpg',
+    './images/oberyn.jpg', './images/oberyn.jpg',
+    './images/dany.jpg', './images/dany.jpg',
+    './images/bronn.jpg', './images/bronn.jpg',
+    './images/jon.jpg', './images/jon.jpg',
+    './images/ned.jpg', './images/ned.jpg',
+    './images/arya.jpg', './images/arya.jpg',
+    './images/tyrion.jpg', './images/tyrion.jpg'
+  ];
   const game = $(".game");
-  const movesNum = $(".moves");
+  const movesNum = $(".movesCounter");
+  const restart = $(".restart");
+  const start = $(".start");
+  const timeCounter = $(".timeCounter");
+  let counter = 30;
+  let gameStart = false;
+  let matches = 0;
   let moves = 0;
   let opened = [];
 
@@ -29,16 +34,18 @@ $(function(){
   newGame = () => {
     game.empty();
     moves = 0;
+    matches = 0;
     movesNum.html(moves);
+    let counter = 30;
+    game.find('.flip').removeClass('flip notmatch match');
     let cards = shuffle(images);
     for ( let i = 0; i < cards.length; i++) {
-      game.append($(`<div class="card" data-elem="${cards[i]}"><p class="value">${cards[i]}</p></div>`))
+      game.append($(`<div class="card" data-elem="${cards[i]}"><img src='${cards[i]}' class='value'></img></div>`))
     };
   };
 
   game.on('click', '.card:not(".match, .flip")', function() {
-
-    if(game.find('.flip').length >= 2){return false;}
+    if(game.find('.flip').length >= 2 || !gameStart){return false;}
 
     let flipped = $(this).data('elem');
     $(this).addClass("flip");
@@ -49,21 +56,38 @@ $(function(){
         game.find('.flip').addClass('match');
         setTimeout( () => {
           game.find('.match').removeClass('flip');
-        }, 700);
+        }, 500);
+        matches++;
       } else {
         game.find('.flip').addClass('notmatch');
         setTimeout( () => {
           game.find('.flip').removeClass('flip notmatch');
-        }, 1000);
+        }, 500);
       }
       opened = [];
       moves++;
       movesNum.html(moves);
     }
-
-
   });
 
+  timer = () => {
+    gameStart = true;
+    let counter = 30;
+    let int =setInterval( () => {
+      if( matches === 8 || counter === 0){
+        game.find('.flip').removeClass('flip notmatch');
+        gameStart = false;
+        clearInterval(int);
+        return false;
+      } else {
+          counter--;
+          timeCounter.text(counter + ' s');
+      }
+    }, 1000);
+    newGame();
+  };
+
+  start.on("click", timer);
 
   newGame();
 })
