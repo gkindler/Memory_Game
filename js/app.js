@@ -12,6 +12,7 @@ $(function(){
   ];
   const game = $(".game");
   const movesNum = $(".movesCounter");
+  const timeNum = $(".timeCounter");
   const restart = $(".restart");
   const start = $(".start");
   const timeCounter = $(".timeCounter");
@@ -33,10 +34,11 @@ $(function(){
 
   newGame = () => {
     game.empty();
+    counter = 30 + ' s';
     moves = 0;
     matches = 0;
+    timeNum.html(counter);
     movesNum.html(moves);
-    let counter = 30;
     game.find('.flip').removeClass('flip notmatch match');
     let cards = shuffle(images);
     for ( let i = 0; i < cards.length; i++) {
@@ -73,7 +75,7 @@ $(function(){
   timer = () => {
     gameStart = true;
     let counter = 30;
-    let int =setInterval( () => {
+    let int = setInterval( () => {
       if( matches === 8 || counter === 0){
         game.find('.flip').removeClass('flip notmatch');
         gameStart = false;
