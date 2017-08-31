@@ -70,7 +70,46 @@ $(function(){
       moves++;
       movesNum.html(moves);
     }
+    if (matches === 8) {
+      setTimeout(function() {
+        endGame(moves);
+      }, 500);
+    }
   });
+
+  restart.on('click', function() {
+    swal({
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      title: 'Are you sure?',
+      text: "Your progress will be Lost!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#9BCB3C',
+      cancelButtonColor: '#EE0E51',
+      confirmButtonText: 'Yes, Restart Game!'
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        newGame();
+      }
+    })
+  });
+
+  endGame = (moves) => {
+  	swal({
+  		allowEscapeKey: false,
+  		allowOutsideClick: false,
+  		title: 'Congratulations! You Won!',
+  		text: 'With ' + moves + ' moves!',
+  		type: 'success',
+  		confirmButtonColor: '#9BCB3C',
+  		confirmButtonText: 'Play again!'
+  	}).then(function(isConfirm) {
+  		if (isConfirm) {
+  			newGame();
+  		}
+  	})
+  }
 
   timer = () => {
     gameStart = true;
