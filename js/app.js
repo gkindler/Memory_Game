@@ -82,7 +82,7 @@ $(function(){
       allowEscapeKey: false,
       allowOutsideClick: false,
       title: 'Are you sure?',
-      text: "Your progress will be Lost!",
+      text: "Your progress will be lost!",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#9BCB3C',
